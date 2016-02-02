@@ -24,8 +24,8 @@ CON_SEC=""
 CON_SEC_KEY=""
 
 #Tweet content
-action_msg = "@ISP @me My internet has fallen significantly below what I pay for, now at"
-warning_msg = "@me Your internet has fallen below the warning limits, now at"
+action_tweet = "@ISP @me My internet has fallen significantly below what I pay for, now at"
+warning_tweet = "@me Your internet has fallen below the warning limits, now at"
 
 
 
