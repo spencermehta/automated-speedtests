@@ -50,8 +50,8 @@ def test(sc):
         my_auth = twitter.OAuth(TOKEN,TOKEN_KEY,CON_SEC,CON_SEC_KEY)
         twit = twitter.Twitter(auth=my_auth)
         
-        d = int(d)
-        u = int(u)
+        d = float(d)
+        u = float(u)
         
         #Tweet ISP if significantly below what you pay for
         if d < 50:
