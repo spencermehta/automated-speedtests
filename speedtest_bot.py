@@ -8,10 +8,26 @@ import sched
 import twitter
 
 
+
+###Variables
 #Download speed below which you are tweeted with warning of slow connection
 warning_limit = 60
 #Download speed below which your ISP is tweeted as well as you about slow connection
 action_limit = 50
+#Interval between tests
+interval = 1800
+
+#Twitter API connection
+TOKEN=""
+TOKEN_KEY=""
+CON_SEC=""
+CON_SEC_KEY=""
+
+#Tweet content
+action_msg = "@ISP @me My internet has fallen significantly below what I pay for, now at"
+warning_msg = "@me Your internet has fallen below the warning limits, now at"
+
+
 
 def test(sc):
         #Run speedtest-cli
@@ -50,7 +66,7 @@ def test(sc):
                 print("UNEXPECTED RESULT - re-running test")
                 retest(sc)
         else:
-                sc.enter(1800, 1, test, (sc,))
+                sc.enter(interval, 1, test, (sc,))
 
 
 
@@ -87,10 +103,10 @@ def retest(sc):
         
         
         #Connect to twitter
-        TOKEN=""
-        TOKEN_KEY=""
-        CON_SEC=""
-        CON_SEC_KEY=""
+        global TOKEN
+        global TOKEN_KEY
+        global CON_SEC
+        global CON_SEC_KEY
         
         my_auth = twitter.OAuth(TOKEN,TOKEN_KEY,CON_SEC,CON_SEC_KEY)
         twit = twitter.Twitter(auth=my_auth)
@@ -102,7 +118,7 @@ def retest(sc):
         if d < action_limit:
                 print("Download speed below action limit. Tweeting ISP")
                 try:
-                        tweet="@ISP @me My internet has fallen significantly below what I pay for, now at " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                        tweet = action_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
                         twit.statuses.update(status=tweet)
                 except Exception as e:
                         print("Error tweeting:", e)
@@ -112,15 +128,15 @@ def retest(sc):
         elif d < warning_limit:
                 print("Download speed below warning limit. Tweeting you")
                 try:
-                        tweet="@me Your internet speed has fallen below acceptable levels, currently at " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                        tweet = warning_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
                         twit.statuses.update(status=tweet)
                 except Exception as e:
                         print("Error tweeting:", e)
         
-        sc.enter(1800, 1, test, (sc,))
+        sc.enter(interval, 1, test, (sc,))
 
 
 
 s = sched.scheduler(time.time, time.sleep)
-s.enter(1800, 1, test, (s,))
+s.enter(interval, 1, test, (s,))
 s.run()
