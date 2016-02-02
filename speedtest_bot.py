@@ -50,21 +50,24 @@ def test(sc):
         my_auth = twitter.OAuth(TOKEN,TOKEN_KEY,CON_SEC,CON_SEC_KEY)
         twit = twitter.Twitter(auth=my_auth)
         
+        d = int(d)
+        u = int(u)
+        
         #Tweet ISP if significantly below what you pay for
-        if eval(d)<50:
+        if d < 50:
                 print("Trying to tweet ISP")
                 try:
-                        tweet="@ISP @me My internet has fallen significantly below what I pay for, now at " + str(int(eval(d))) + "down\\" + str(int(eval(u))) + "up"
+                        tweet="@ISP @me My internet has fallen significantly below what I pay for, now at " + str(d) + "down\\" + str(u) + "up"
                         twit.statuses.update(status=tweet)
                 except:
                         print("Error tweeting")
                         
         
         #Tweet you if slightly below what you pay for                
-        elif eval(d)<60:
+        elif d < 60:
                 print("Trying to tweet you")
                 try:
-                        tweet="@me Your internet speed has fallen below acceptable levels, currently at " + str(int(eval(d))) + "down\\" + str(int(eval(u))) + "up"
+                        tweet="@me Your internet speed has fallen below acceptable levels, currently at " + str(d) + "down\\" + str(u) + "up"
                         twit.statuses.update(status=tweet)
                 except:
                         print("Error tweeting")
