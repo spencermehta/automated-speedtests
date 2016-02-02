@@ -13,7 +13,7 @@ s = sched.scheduler(time.time, time.sleep)
 def test(sc):
         #Run speedtest-cli
         print("Running speedtest-cli")
-        a = os.popen("python /path/to/speedtest_cli.py --simple").read()
+        a = os.popen("python /path/to/speedtest_cli.py --simple --share").read()
         print("Ran speedtest-cli")
         
         lines = a.split("\n")
@@ -32,6 +32,7 @@ def test(sc):
                 p = lines[0][6:11]
                 d = lines[1][10:14]
                 u = lines[2][8:12]
+                img = lines[3][15:]
         print(date, p, d, u)
         
         #Save the data to file for local network plotting
@@ -57,7 +58,7 @@ def test(sc):
         if d < 50:
                 print("Trying to tweet ISP")
                 try:
-                        tweet="@ISP @me My internet has fallen significantly below what I pay for, now at " + str(d) + "down\\" + str(u) + "up"
+                        tweet="@ISP @me My internet has fallen significantly below what I pay for, now at " + str(d) + "down\\" + str(u) + "up - " + str(img)
                         twit.statuses.update(status=tweet)
                 except:
                         print("Error tweeting")
@@ -67,7 +68,7 @@ def test(sc):
         elif d < 60:
                 print("Trying to tweet you")
                 try:
-                        tweet="@me Your internet speed has fallen below acceptable levels, currently at " + str(d) + "down\\" + str(u) + "up"
+                        tweet="@me Your internet speed has fallen below acceptable levels, currently at " + str(d) + "down\\" + str(u) + "up - " + str(img)
                         twit.statuses.update(status=tweet)
                 except:
                         print("Error tweeting")
