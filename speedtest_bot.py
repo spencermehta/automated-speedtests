@@ -5,31 +5,7 @@ import csv
 import datetime
 import time
 import twitter
-
-
-
-###Variables
-#Download speed below which you are tweeted with warning of slow connection
-warning_limit = 60
-#Download speed below which your ISP is tweeted as well as you about slow connection
-action_limit = 50
-#Interval between test starts (seconds)
-interval = 1800
-
-#Twitter API connection
-TOKEN=""
-TOKEN_KEY=""
-CON_SEC=""
-CON_SEC_KEY=""
-
-#Tweet content
-action_tweet = "@ISP @me My internet has fallen significantly below what I pay for, now at"
-warning_tweet = "@me Your internet has fallen below the warning limits, now at"
-
-#Path to speedest-cli module
-speedtest_cli_path = "/path/to/speedtest_cli.py"
-webserver_path = "/path/to/webserver" #Don't put / at end of this path
-
+import config
 
 def test():
         passed_test = False
@@ -41,7 +17,7 @@ def test():
                         print("Result below warning limit. Re-running test")
                 #Run speedtest-cli
                 print("Running speedtest-cli")
-                a = os.popen("python " + speedtest_cli_path + " --simple --share").read()
+                a = os.popen("python " + config.speedtest_cli_path + " --simple --share").read()
                 print("Ran speedtest-cli")
                 
                 lines = a.split("\n")
@@ -64,36 +40,36 @@ def test():
                 print(date, p, d, u)
                 
                 #Save the data to file for local network plotting
-                out_file = open(webserver_path + "/data.csv", 'a')
+                out_file = open(config.webserver_path + "/data.csv", 'a')
                 writer = csv.writer(out_file)
                 writer.writerow((date,p,d,u))
                 out_file.close()
                 
                 d = float(d)
                 
-                if d >= warning_limit:
+                if d >= config.warning_limit:
                         passed_test = True
                         
         if not passed_test and counter == 2:
                      
                      
-                my_auth = twitter.OAuth(TOKEN,TOKEN_KEY,CON_SEC,CON_SEC_KEY)
+                my_auth = twitter.OAuth(config.TOKEN, config.TOKEN_KEY, config.CON_SEC, config.CON_SEC_KEY)
                 twit = twitter.Twitter(auth=my_auth)
-                #Tweet ISP if significantly below what you pay fo
-                if d < action_limit:
+                #Tweet ISP if significantly below what you pay for
+                if d < config.action_limit:
                         print("Download speed below action limit. Tweeting ISP")
                         try:
-                                tweet = action_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                                tweet = config.action_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
                                 twit.statuses.update(status=tweet)
                         except Exception as e:
                                 print("Error tweeting:", e)
                                 
                 
                 #Tweet you if slightly below what you pay for
-                elif d < warning_limit:
+                elif d < config.warning_limit:
                         print("Download speed below warning limit. Tweeting you")
                         try:
-                                tweet = warning_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                                tweet = config.warning_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
                                 twit.statuses.update(status=tweet)
                         except Exception as e:
                                 print("Error tweeting:", e)
@@ -102,6 +78,6 @@ def test():
 while True:
         start_time = time.time()
         test()
-        sleep_time = max(interval - (time.time() - start_time), 0)
+        sleep_time = max(config.interval - (time.time() - start_time), 0)
         #print("Sleeping for ", round(sleep_time, 0), " seconds")
         time.sleep(sleep_time)
