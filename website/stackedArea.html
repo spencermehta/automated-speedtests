@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>Automated-Speedtests Graph</title>
+<link rel="stylesheet" href="css.css">
+<script src="amcharts/amcharts.js"></script>
+<script src="amcharts/serial.js"></script>
+<script src="amcharts/themes/dark.js"></script>
+<script src="amcharts/plugins/dataloader/dataloader.min.js" type="text/javascript"></script>
+
+</head>
+
+<div id="chartdiv">
+    <script>
+	var chart = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "dark",
+    "marginRight":30,
+	"dataDateFormat": "YYYY-MM-DD JJ:NN:SS",
+    "dataLoader": {
+		"url": "data.csv",
+		"format": "csv",
+		"delimiter": ",",
+		"useColumnNames": true
+	},
+	"legend": {
+        "equalWidths": false,
+        "periodValueText": "total: [[value.sum]]",
+        "position": "top",
+        "valueAlign": "left",
+        "valueWidth": 100
+    },
+    "valueAxes": [{
+        "stackType": "regular",
+        "gridAlpha": 0.07,
+        "position": "left",
+        "title": "Date"
+    }],
+    "graphs": [{
+        "balloonText": "<img src='http://www.amcharts.com/lib/3/images/car.png' style='vertical-align:bottom; margin-right: 10px; width:28px; height:21px;'><span style='font-size:14px; color:#000000;'><b>[[value]]</b></span>",
+        "fillAlphas": 0.6,
+        "lineAlpha": 0.4,
+        "title": "Ping",
+        "valueField": "ping"
+    }, {
+        "balloonText": "<img src='http://www.amcharts.com/lib/3/images/motorcycle.png' style='vertical-align:bottom; margin-right: 10px; width:28px; height:21px;'><span style='font-size:14px; color:#000000;'><b>[[value]]</b></span>",
+        "fillAlphas": 0.6,
+        "lineAlpha": 0.4,
+        "title": "Upload",
+        "valueField": "up"
+    }, {
+        "balloonText": "<img src='http://www.amcharts.com/lib/3/images/bicycle.png' style='vertical-align:bottom; margin-right: 10px; width:28px; height:21px;'><span style='font-size:14px; color:#000000;'><b>[[value]]</b></span>",
+        "fillAlphas": 0.6,
+        "lineAlpha": 0.4,
+        "title": "Download",
+        "valueField": "down"
+    }],
+    "plotAreaBorderAlpha": 0,
+    "marginTop": 10,
+    "marginLeft": 0,
+    "marginBottom": 0,
+    "chartScrollbar": {},
+    "chartCursor": {
+        "cursorAlpha": 0
+    },
+    "categoryField": "date",
+    "categoryAxis": {
+		"parseDates": true,
+		"minPeriod": "mm",
+        "dashLength": 1,
+        "minorGridEnabled": true,
+        "startOnAxis": true,
+        "axisColor": "#DADADA",
+        "gridAlpha": 0.07,
+        "title": "Year",
+        "guides": [{
+            category: "2001",
+            toCategory: "2003",
+            lineColor: "#CC0000",
+            lineAlpha: 1,
+            fillAlpha: 0.2,
+            fillColor: "#CC0000",
+            dashLength: 2,
+            inside: true,
+            labelRotation: 90,
+            label: "fines for speeding increased"
+        }, {
+            category: "2007",
+            lineColor: "#CC0000",
+            lineAlpha: 1,
+            dashLength: 2,
+            inside: true,
+            labelRotation: 90,
+            label: "motorcycle fee introduced"
+        }]
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+    </script>
+</div>	
+</html>
