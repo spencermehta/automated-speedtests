@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>Automated-Speedtests Graph</title>
-<link rel="stylesheet" href="css.css">
+<link rel="stylesheet" href="animated.css">
 <script src="amcharts/amcharts.js"></script>
 <script src="amcharts/serial.js"></script>
 <script src="amcharts/themes/dark.js"></script>
@@ -20,6 +19,7 @@ var chart = AmCharts.makeChart("chartdiv", {
 	"legend": {
         "useGraphSettings": true
     },
+	"addClassNames": true,
     "marginRight": 40,
     "marginLeft": 40,
     "autoMarginOffset": 20,
@@ -143,5 +143,15 @@ function zoomChart() {
 }
 
     </script>
-</div>	
+</div>
+<br>
+<form action="line.html">
+    <input type="submit" value="Line">
+</form>
+<form action="animated.html">
+    <input type="submit" value="Animated Line">
+</form>
+<form action="stackedArea.html">
+    <input type="submit" value="Stacked Area">
+</form>
 </html>

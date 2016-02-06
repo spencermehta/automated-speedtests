@@ -55,11 +55,11 @@ def test():
                      
                 my_auth = twitter.OAuth(config.TOKEN, config.TOKEN_KEY, config.CON_SEC, config.CON_SEC_KEY)
                 twit = twitter.Twitter(auth=my_auth)
-                #Tweet ISP if significantly below what you pay for
+                #Tweet ISP if significantly below what you pay fo
                 if d < config.action_limit:
                         print("Download speed below action limit. Tweeting ISP")
                         try:
-                                tweet = config.action_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                                tweet = config.action_tweet1 + str(d) + "down\\" + str(u) + "up" + config.action_tweet2 + " - " +  str(img)
                                 twit.statuses.update(status=tweet)
                         except Exception as e:
                                 print("Error tweeting:", e)
@@ -69,7 +69,7 @@ def test():
                 elif d < config.warning_limit:
                         print("Download speed below warning limit. Tweeting you")
                         try:
-                                tweet = config.warning_tweet + " " + str(d) + "down\\" + str(u) + "up - " + str(img)
+                                tweet = config.warning_tweet1 + str(d) + "down\\" + str(u) + "up" + config.warning_tweet2 + " - " + str(img)
                                 twit.statuses.update(status=tweet)
                         except Exception as e:
                                 print("Error tweeting:", e)
