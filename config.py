@@ -17,8 +17,11 @@ CON_SEC_KEY=""  #Consumer Secret
 action_tweet = "@ISP @me My internet has fallen significantly below what I pay for, now at %d down/%u up and with %p ping - %img"
 warning_tweet = "@me Your internet has fallen below the warning limits, now at %d down/%u up and with %p ping - %img"
 
+
+
+###You shouldn't need to alter these if you're following the standard installation guide
 #Path to speedest-cli module
-speedtest_cli_path = "/path/to/speedtest_cli.py"
+speedtest_cli_path = "speedtest-cli/speedtest_cli.py"
 
 #Path to website
-webserver_path = "/path/to/website"  #Don't put / at end of this path
+webserver_path = "website"
