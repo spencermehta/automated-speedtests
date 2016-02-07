@@ -1,3 +1,6 @@
+# automated-speedtests
+Automatically perform speedtests at custom intervals, graph data and tweet when speeds fall below thresholds  
+
 This is written for Ubuntu server. Will run on similar setups such as Raspberry Pi, Debian etc.
 
 #Prerequisites
