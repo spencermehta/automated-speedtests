@@ -14,13 +14,11 @@ CON_SEC=""  #Consumer Key
 CON_SEC_KEY=""  #Consumer Secret
 
 #Tweet content
-action_tweet1 = "@ISP @me My internet has fallen significantly below what I pay for, now at "  #Before speeds
-action_tweet2 = ""  #After speeds
-
-warning_tweet1 = "@me Your internet has fallen below the warning limits, now at "  #Before speeds
-warning_tweet2 = ""  #After speeds
+action_tweet = "@ISP @me My internet has fallen significantly below what I pay for, now at %d down/%u up and with %p ping - %img"
+warning_tweet = "@me Your internet has fallen below the warning limits, now at %d down/%u up and with %p ping - %img"
 
 #Path to speedest-cli module
 speedtest_cli_path = "/path/to/speedtest_cli.py"
-#Path to webserver
+
+#Path to website
 webserver_path = "/path/to/website"  #Don't put / at end of this path
