@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 
-<link rel="stylesheet" href="animated.css">
+<link rel="stylesheet" href="css.css">
 <script src="amcharts/amcharts.js"></script>
 <script src="amcharts/serial.js"></script>
 <script src="amcharts/themes/dark.js"></script>
@@ -19,7 +19,6 @@ var chart = AmCharts.makeChart("chartdiv", {
 	"legend": {
         "useGraphSettings": true
     },
-	"addClassNames": true,
     "marginRight": 40,
     "marginLeft": 40,
     "autoMarginOffset": 20,
@@ -127,8 +126,8 @@ var chart = AmCharts.makeChart("chartdiv", {
     "export": {
         "enabled": true
     },
-	"dataLoader": {
-		"url": "data.csv",
+    "dataLoader": {
+		"url": "speedresults.csv",
 		"format": "csv",
 		"delimiter": ",",
 		"useColumnNames": true
@@ -143,15 +142,4 @@ function zoomChart() {
 }
 
     </script>
-</div>
-<br>
-<form action="line.html">
-    <input type="submit" value="Line">
-</form>
-<form action="animated.html">
-    <input type="submit" value="Animated Line">
-</form>
-<form action="stackedArea.html">
-    <input type="submit" value="Stacked Area">
-</form>
 </html>

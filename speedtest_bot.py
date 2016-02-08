@@ -41,7 +41,7 @@ def test():
         print(date, p, d, u)
                 
         #Save the data to file for local network plotting
-        out_file = open(config.webserver_path + "/data.csv", 'a')
+        out_file = open(config.webserver_path + "/speedresults.csv", 'a')
         writer = csv.writer(out_file)
         writer.writerow((date,p,d,u))
         out_file.close()
