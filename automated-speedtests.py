@@ -108,7 +108,10 @@ while True:
         
     ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
     
-    if down < config.action_limit and tests > 1:
+
+    if down >= config.action_limit:
+        sleep(start_time)
+    elif down < config.action_limit and tests > 1:
         tweet(config.action_tweet, ping, down, up, img)
         sleep(start_time)
     elif down < config.warning_limit and tests > 1:
