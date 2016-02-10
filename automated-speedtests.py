@@ -95,7 +95,7 @@ def tweet(tweetcontent, ping, down, up, img):
 
 
 
-def sleep(start_time):
+def sleepInterval(start_time):
     sleep_time = max(config.interval - (time.time() - start_time), 0)
     print("\nSleeping for ", round(sleep_time, 0), " seconds")
     time.sleep(sleep_time)
@@ -110,12 +110,12 @@ while True:
     
 
     if down >= config.action_limit:
-        sleep(start_time)
+        sleepInterval(start_time)
     elif down < config.action_limit and tests > 1:
         tweet(config.action_tweet, ping, down, up, img)
-        sleep(start_time)
+        sleepInterval(start_time)
     elif down < config.warning_limit and tests > 1:
         tweet(config.warning_tweet, ping, down, up, img)
-        sleep(start_time)
+        sleepInterval(start_time)
     else:
         print("***Unexpected result. Repeating speed test***")
