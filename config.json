@@ -1,0 +1,7 @@
+{
+    "warning_limit": "50",
+    "action_limit": "40",
+    "interval": "1800",
+    "speedtest_cli_path": "/home/spencer/projects/autospeed/speedtest-cli/speedtest_cli.py",
+    "webserver_path": "/home/spencer/projects/autospeed/website"
+}
