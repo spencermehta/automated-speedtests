@@ -1,0 +1,16 @@
+{
+    "warning_limit": "70",
+    "action_limit": "70",
+    "interval": "1800",
+    "speedtest_cli_path": "/home/spencer/projects/autospeed/speedtest-cli/speedtest_cli.py",
+    "webserver_path": "/home/spencer/projects/autospeed/website",
+    "twitter": {
+        "tweeting": "disabled",
+        "twitterToken": "none",
+        "twitterConsumerKey": "none",
+        "twitterTokenSecret": "none",
+        "twitterConsumerSecret": "none",
+        "warning_tweet": "@isp Why is my internet only %down/%up with %ping ping? ",
+        "action_tweet": "@isp Why is my internet only %down/%up with %ping ping?"
+    }
+}
