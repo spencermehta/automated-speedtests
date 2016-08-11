@@ -1,16 +1,16 @@
 {
-    "warning_limit": "70",
+    "warning_limit": "80",
     "action_limit": "70",
     "interval": "1800",
-    "speedtest_cli_path": "/home/spencer/projects/autospeed/speedtest-cli/speedtest_cli.py",
-    "webserver_path": "/home/spencer/projects/autospeed/website",
+    "speedtest_cli_path": "/path/to/speedtest_cli.py",
+    "webserver_path": "/path/to/website",
     "twitter": {
         "tweeting": "disabled",
-        "twitterToken": "741983930107191296-BijB6FSwcdfmAuoiLaj12RGDJI4re84",
-        "twitterConsumerKey": "Y4VOpmHFeOYwSPRmPlJMOaFUg",
-        "twitterTokenSecret": "CnrYqHMWCAKZ42rMCxPdN79oAZ6vJEsEZzGZ4gc1BkUhf",
-        "twitterConsumerSecret": "LUL7WdhkXZ57hBm9FMZPmuFsTvfQFDqsbNAgCLZELAi83n2C8K",
-        "warning_tweet": "hi",
-        "action_tweet": "hey"
+        "twitterToken": "none ",
+        "twitterConsumerKey": "none",
+        "twitterTokenSecret": "none",
+        "twitterConsumerSecret": "none",
+        "warning_tweet": "sample",
+        "action_tweet": "sample"
     }
 }
