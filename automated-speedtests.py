@@ -4,7 +4,7 @@ import sys
 import csv
 import datetime
 import time
-#import twitter
+import twitter
 import json
 
 
@@ -72,30 +72,30 @@ def speedTest(ping, down, up, img, tests):
 
 
 
-#def tweet(tweetcontent, ping, down, up, img):
-#        #Twitter API connection
-#        my_auth = twitter.OAuth(config.TOKEN, config.TOKEN_KEY, config.CON_SEC, config.CON_SEC_KEY)
-#        twit = twitter.Twitter(auth=my_auth)
-#
-#        print("Tweeting...")
-#
-#        tweet = tweetcontent
-#        if '%p' in tweet:
-#            tweet = tweet.replace('%p', str(ping))
-#        if '%d' in tweet:
-#            tweet = tweet.replace('%d', str(down))
-#        if '%u' in tweet:
-#            tweet = tweet.replace('%u', str(up))
-#        if '%img' in tweet:
-#            tweet = tweet.replace('%img', str(img))
-#
-#        try:
-#            twit.statuses.update(status=tweet)
-#            print(tweet)
-#            print("Tweeted successfully")
-#
-#        except Exception as e:
-#            print("Error tweeting:", e)
+def tweet(tweetcontent, ping, down, up, img):
+        #Twitter API connection
+        my_auth = twitter.OAuth(config['twitter']['twitterToken'], config['twitter']['twitterConsumerKey'], config['twitter']['twitterTokenSecret'], config['twitter']['twitterConsumerSecret'])
+        twit = twitter.Twitter(auth=my_auth)
+
+        print("Tweeting...")
+
+        tweet = tweetcontent
+        if '%p' in tweet:
+            tweet = tweet.replace('%p', str(ping))
+        if '%d' in tweet:
+            tweet = tweet.replace('%d', str(down))
+        if '%u' in tweet:
+            tweet = tweet.replace('%u', str(up))
+        if '%img' in tweet:
+            tweet = tweet.replace('%img', str(img))
+
+        try:
+            twit.statuses.update(status=tweet)
+            print(tweet)
+            print("Tweeted successfully")
+
+        except Exception as e:
+            print("Error tweeting:", e)
 
 
 
@@ -106,20 +106,21 @@ def sleepInterval(start_time):
 
 
 
+tweeting = str(config['twitter']['tweeting'])
 
 while True:
     start_time = time.time()
-        
     ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
-    
 
     if down >= float(config['action_limit']):
         sleepInterval(start_time)
     elif down < float(config['action_limit']) and tests > 1:
-        #tweet(config['action_tweet'], ping, down, up, img)
+        if tweeting == 'enabled':
+                tweet(str(config['twitter']['action_tweet']), ping, down, up, img)
         sleepInterval(start_time)
-    elif down < float(config['warning_limit']) and tests > 1:
-        #tweet(config['warning_tweet'], ping, down, up, img)
+    elif down < float(str(config['warning_limit'])) and tests > 1:
+        if tweeting == 'enabled':
+                tweet(str(config['twitter']['warning_tweet']), ping, down, up, img)
         sleepInterval(start_time)
     else:
         print("***Unexpected result. Repeating speed test***")
