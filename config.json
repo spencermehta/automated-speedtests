@@ -1,16 +1,20 @@
 {
-    "warning_limit": "70",
-    "action_limit": "70",
     "interval": "1800",
-    "speedtest_cli_path": "/home/spencer/projects/autospeed/speedtest-cli/speedtest_cli.py",
-    "webserver_path": "/home/spencer/projects/autospeed/website",
+    "speedtestPath": "/path/to/speedtest_cli.py",
+    "webserverPath": "/path/to/website",
     "twitter": {
-        "tweeting": "disabled",
-        "twitterToken": "none",
-        "twitterConsumerKey": "none",
-        "twitterTokenSecret": "none",
-        "twitterConsumerSecret": "none",
-        "warning_tweet": "@isp Why is my internet only %down/%up with %ping ping? ",
-        "action_tweet": "@isp Why is my internet only %down/%up with %ping ping?"
+        "tweeting": "enabled",
+        "consumerKey": "none",
+        "consumerSecret": "none",
+        "token": "none",
+        "tokenSecret": "none"
+    },
+    "thresholds": {
+        "70": [
+            "@ISP Why is my internet only %d/%u mbps when I pay for 70/30?"
+        ],
+        "50": [
+            "@ISP What's wrong with my connection? I only have %d/%u mbps when I pay for 70/30"
+        ]
     }
 }

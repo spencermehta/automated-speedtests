@@ -32,7 +32,7 @@ with open('/home/spencer/projects/autospeed/config.json', 'r') as f:
 
 def speedTest(ping, down, up, img, tests):
         print("\nConducting speed test...")
-        speedTestOutput = os.popen("python " + config['speedtest_cli_path'] + " --simple --share").read()
+        speedTestOutput = os.popen("python " + config['speedtestPath'] + " --simple --share").read()
         print("Speed test complete")
 
         lines = speedTestOutput.split("\n")
@@ -43,21 +43,21 @@ def speedTest(ping, down, up, img, tests):
         print(date + "\n" + speedTestOutput + "------------------------------------------------------\n")
         #Set speeds to 0 if speedtest-cli couldn't connect
         if "Cannot" in speedTestOutput:
-            ping = 100
-            down = 0
-            up = 0
-            img = "noimg"
+                ping = 100
+                down = 0
+                up = 0
+                img = "noimg"
 
         #Extract values for ping, download and upload
         else:
-            ping = lines[0].split(' ')[1]
-            down = lines[1].split(' ')[1]
-            up = lines[2].split(' ')[1]
-            img = lines[3].split(' ')[2]
+                ping = lines[0].split(' ')[1]
+                down = lines[1].split(' ')[1]
+                up = lines[2].split(' ')[1]
+                img = lines[3].split(' ')[2]
 
 
         #Save the data to file for local network plotting
-        fileSpeedResults = open(config['webserver_path'] + "/speedresults.csv", 'a')
+        fileSpeedResults = open(config['webserverPath'] + "/speedresults.csv", 'a')
         writer = csv.writer(fileSpeedResults)
         writer.writerow((date, ping, down, up))
         fileSpeedResults.close()
@@ -72,55 +72,54 @@ def speedTest(ping, down, up, img, tests):
 
 
 
-def tweet(tweetcontent, ping, down, up, img):
+def tweet(tweetmsg, ping, down, up, img):
         #Twitter API connection
-        my_auth = twitter.OAuth(config['twitter']['twitterToken'], config['twitter']['twitterConsumerKey'], config['twitter']['twitterTokenSecret'], config['twitter']['twitterConsumerSecret'])
-        twit = twitter.Twitter(auth=my_auth)
+        api = twitter.Api(consumer_key=config['twitter']['consumerKey'],
+                          consumer_secret=config['twitter']['consumerSecret'],
+                          access_token_key=config['twitter']['token'],
+                          access_token_secret=config['twitter']['tokenSecret'])
 
         print("Tweeting...")
-
-        tweet = tweetcontent
-        if '%p' in tweet:
-            tweet = tweet.replace('%p', str(ping))
-        if '%d' in tweet:
-            tweet = tweet.replace('%d', str(down))
-        if '%u' in tweet:
-            tweet = tweet.replace('%u', str(up))
-        if '%img' in tweet:
-            tweet = tweet.replace('%img', str(img))
+        
+        if '%p' in tweetmsg:
+                tweetmsg = tweetmsg.replace('%p', str(ping))
+        if '%d' in tweetmsg:
+                tweetmsg = tweetmsg.replace('%d', str(down))
+        if '%u' in tweetmsg:
+                tweetmsg = tweetmsg.replace('%u', str(up))
+        if '%img' in tweetmsg:
+                tweetmsg = tweetmsg.replace('%img', str(img))
 
         try:
-            twit.statuses.update(status=tweet)
-            print(tweet)
-            print("Tweeted successfully")
+                print(tweetmsg)
+                status = api.PostUpdate(tweetmsg)
+                print("Tweeted successfully")
 
         except Exception as e:
-            print("Error tweeting:", e)
+                print("Error tweeting:", e)
 
 
 
 def sleepInterval(start_time):
-    sleep_time = max(float(config['interval']) - (time.time() - start_time), 0)
-    print("\nSleeping for ", round(sleep_time, 0), " seconds")
-    time.sleep(sleep_time)
+        sleep_time = max(float(config['interval']) - (time.time() - start_time), 0)
+        print("\nSleeping for ", round(sleep_time, 0), " seconds")
+        time.sleep(sleep_time)
 
 
 
 tweeting = str(config['twitter']['tweeting'])
+tweets = config['thresholds']
 
 while True:
-    start_time = time.time()
-    ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
-
-    if down >= float(config['action_limit']):
-        sleepInterval(start_time)
-    elif down < float(config['action_limit']) and tests > 1:
+        start_time = time.time()
+        ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
+        
         if tweeting == 'enabled':
-                tweet(str(config['twitter']['action_tweet']), ping, down, up, img)
+                for (threshold, tweetmsg) in tweets.items():
+                        threshold = float(threshold)
+                        if down < threshold:
+                               tweetmsg = tweetmsg[0]
+                
+                tweet(tweetmsg, ping, down, up, img)
         sleepInterval(start_time)
-    elif down < float(str(config['warning_limit'])) and tests > 1:
-        if tweeting == 'enabled':
-                tweet(str(config['twitter']['warning_tweet']), ping, down, up, img)
-        sleepInterval(start_time)
-    else:
-        print("***Unexpected result. Repeating speed test***")
+#                print("***Unexpected result. Repeating speed test***")
