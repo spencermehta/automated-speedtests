@@ -26,7 +26,7 @@ tests = 0
 
 
 
-with open('/home/spencer/projects/autospeed/config.json', 'r') as f:
+with open('config.json', 'r') as f:
         config = json.load(f)
 
 
