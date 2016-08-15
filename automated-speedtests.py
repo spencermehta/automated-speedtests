@@ -118,8 +118,11 @@ while True:
                 for (threshold, tweetmsg) in tweets.items():
                         threshold = float(threshold)
                         if down < threshold:
-                               tweetmsg = tweetmsg[0]
+                               tweetcontent = tweetmsg[0]
                 
-                tweet(tweetmsg, ping, down, up, img)
+                try:
+                        tweet(tweetcontent, ping, down, up, img)
+                except:
+                        print("Not tweeting")
         sleepInterval(start_time)
 #                print("***Unexpected result. Repeating speed test***")
