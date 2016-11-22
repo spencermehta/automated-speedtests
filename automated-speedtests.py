@@ -4,7 +4,7 @@ import sys
 import csv
 import datetime
 import time
-import twitter
+#import twitter
 import json
 
 
@@ -29,6 +29,16 @@ tests = 0
 with open('config.json', 'r') as f:
         config = json.load(f)
 
+def pingTest():
+    hostname = "google.com"
+    response = os.system("ping -c 1 " + hostname)
+    if response == 0:
+        pingResult = True
+    else:
+        pingResult = False
+
+    return pingResult
+
 
 def speedTest(ping, down, up, img, tests):
         print("\nConducting speed test...")
@@ -38,7 +48,7 @@ def speedTest(ping, down, up, img, tests):
         lines = speedTestOutput.split("\n")
         ts = time.time()
         date = datetime.datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
-        
+
         print("\n------------------------------------------------------")
         print(date + "\n" + speedTestOutput + "------------------------------------------------------\n")
         #Set speeds to 0 if speedtest-cli couldn't connect
@@ -68,7 +78,7 @@ def speedTest(ping, down, up, img, tests):
 
         tests += 1
 
-        return(ping, down, up, img, tests)        
+        return(ping, down, up, img, tests)
 
 
 
@@ -80,7 +90,7 @@ def tweet(tweetmsg, ping, down, up, img):
                           access_token_secret=config['twitter']['tokenSecret'])
 
         print("Tweeting...")
-        
+
         if '%p' in tweetmsg:
                 tweetmsg = tweetmsg.replace('%p', str(ping))
         if '%d' in tweetmsg:
@@ -111,18 +121,30 @@ tweeting = str(config['twitter']['tweeting'])
 tweets = config['thresholds']
 
 while True:
+        downtime = 0
         start_time = time.time()
-        ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
-        
-        if tweeting == 'enabled':
-                for (threshold, tweetmsg) in tweets.items():
-                        threshold = float(threshold)
-                        if down < threshold:
-                               tweetcontent = tweetmsg[0]
-                
-                try:
-                        tweet(tweetcontent, ping, down, up, img)
-                except:
-                        print("Not tweeting")
-        sleepInterval(start_time)
-#                print("***Unexpected result. Repeating speed test***")
+        pingResult = pingTest()
+
+        while pingResult == False:
+            downtime = time.time() - start_time
+            print("No network connection detected")
+            pingResult = pingTest()
+
+        if pingResult == True:
+            if downtime > 0:
+                print("Network connection re-established. Downtime: ", downtime)
+            else:
+                print("Network connection detected")
+                ping, down, up, img, tests = speedTest(ping, down, up, img, tests)
+
+                if tweeting == 'enabled':
+                        for (threshold, tweetmsg) in tweets.items():
+                                threshold = float(threshold)
+                                if down < threshold:
+                                       tweetcontent = tweetmsg[0]
+
+                        try:
+                                tweet(tweetcontent, ping, down, up, img)
+                        except:
+                                print("Not tweeting")
+                sleepInterval(start_time)
