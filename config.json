@@ -16,5 +16,6 @@
         "50": [
             "@ISP What's wrong with my connection? I only have %d/%u mbps when I pay for 70/30"
         ]
-    }
+    },
+    "hostname": "google.com"
 }

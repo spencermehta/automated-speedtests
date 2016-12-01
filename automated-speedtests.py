@@ -30,7 +30,7 @@ with open('config.json', 'r') as f:
         config = json.load(f)
 
 def pingTest():
-    hostname = "google.com"
+    hostname = config['hostname']
     response = os.system("ping -c 1 " + hostname)
     if response == 0:
         pingResult = True
