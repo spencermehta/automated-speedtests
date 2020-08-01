@@ -1,0 +1,5 @@
+celery
+Django==3.0.8
+psycopg2-binary
+redis
+speedtest-cli

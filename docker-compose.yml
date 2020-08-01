@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+    web:
+        build:
+            context: ./app
+            dockerfile: Dockerfile
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - ./app/:/usr/src/app/
+        env_file:
+            - ./.env.dev
+        ports:
+            - 8000:8000
+        depends_on: 
+            - db
+            - redis
+    db:
+        image: postgres:12.0-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=autospeed
+            - POSTGRES_PASSWORD=autospeed
+            - POSTGRES_DB=autospeed_dev
+    redis:
+        image: redis:alpine
+    celery:
+        build: ./app
+        command: celery -A autospeed worker -l info
+        volumes:
+            - ./app/:/usr/src/app/
+        env_file:
+            - ./.env.dev
+        depends_on:
+            - redis
+    celery-beat:
+        build: ./app
+        command: celery -A autospeed beat -l info
+        volumes:
+            - ./app/:/usr/src/app/
+        env_file:
+            - ./.env.dev
+        depends_on:
+            - redis
+              
+      
+volumes:
+    postgres_data:
