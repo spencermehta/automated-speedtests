@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import SpeedtestResultList, HomeView, get_data, ChartData
 
 urlpatterns = [
+    path('', HomeView.as_view(), name="home"),
+    path('api/data/', get_data, name="data"),
+    path('api/chart/data/', ChartData.as_view(), name="chartdata"),
+    path('results/', SpeedtestResultList.as_view(), name="speedtestresult-list"),
     path('admin/', admin.site.urls),
 ]

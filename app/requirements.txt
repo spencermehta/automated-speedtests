@@ -1,5 +1,7 @@
 celery
 Django==3.0.8
+django-bootstrap4
+djangorestframework
 psycopg2-binary
 redis
 speedtest-cli

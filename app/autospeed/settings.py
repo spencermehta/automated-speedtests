@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'bootstrap4',
     'autospeed',
 ]
 
@@ -138,6 +140,10 @@ CELERY_BEAT_SCHEDULE = {
     },
     "custom_command": {
         "task": "autospeed.tasks.custom_command",
+        "schedule": crontab(minute="*/1"),
+    },
+    "run_speed_test": {
+        "task": "autospeed.tasks.run_speed_test",
         "schedule": crontab(minute="*/1"),
     },
 }
